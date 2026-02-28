@@ -1,0 +1,26 @@
+{
+  "name": "@sentinel/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3501",
+    "build": "next build",
+    "start": "next start --port 3501",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "15.2.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "@sentinel/ui": "workspace:*",
+    "@sentinel/api-client": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.10",
+    "@types/react-dom": "19.0.4",
+    "tailwindcss": "4.0.14",
+    "@tailwindcss/postcss": "4.0.14",
+    "postcss": "8.5.3",
+    "typescript": "5.7.3"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.react.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/web",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", ".next"]
+}

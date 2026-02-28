@@ -1,0 +1,23 @@
+{
+  "name": "sentinel-suite",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "dev": "nx run-many --target=dev --projects=api,web,admin",
+    "build": "nx run-many --target=build",
+    "lint": "biome check .",
+    "format": "biome format . --write",
+    "type-check": "nx run-many --target=type-check",
+    "test": "nx run-many --target=test"
+  },
+  "devDependencies": {
+    "nx": "22.4.3",
+    "@nx/js": "22.4.3",
+    "@nx/nest": "22.4.3",
+    "@nx/next": "22.4.3",
+    "@nx/workspace": "22.4.3",
+    "typescript": "5.7.3",
+    "@biomejs/biome": "2.0.6"
+  }
+}

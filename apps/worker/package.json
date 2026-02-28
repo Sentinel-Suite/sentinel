@@ -1,0 +1,8 @@
+{
+  "name": "@sentinel/worker",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Worker stub -- not yet implemented'"
+  }
+}

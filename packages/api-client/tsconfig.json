@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.node.json",
+  "compilerOptions": {
+    "outDir": "../../dist/packages/api-client",
+    "rootDir": "src"
+  },
+  "include": ["src"]
+}
