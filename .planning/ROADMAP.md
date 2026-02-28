@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans in 3 waves (sequential)
 
 Plans:
-- [ ] 01-01-PLAN.md -- Nx workspace scaffolding, all apps + packages, Biome, Git hooks, CI, repo housekeeping
+- [x] 01-01-PLAN.md -- Nx workspace scaffolding, all apps + packages, Biome, Git hooks, CI, repo housekeeping
 - [ ] 01-02-PLAN.md -- Environment config (Zod validation), Drizzle DB setup, Docker Compose infrastructure
 - [ ] 01-03-PLAN.md -- NestJS API bootstrap with Pino logging, health endpoints, Next.js landing pages
 
@@ -179,7 +179,7 @@ Note: Phases 2 and 3 depend only on Phase 1 and could theoretically execute in p
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Monorepo Foundation | 0/3 | Not started | - |
+| 1. Monorepo Foundation | 1/3 | In progress | - |
 | 2. Database & Tenant Core | 0/2 | Not started | - |
 | 3. API Infrastructure | 0/2 | Not started | - |
 | 4. Authentication | 0/3 | Not started | - |

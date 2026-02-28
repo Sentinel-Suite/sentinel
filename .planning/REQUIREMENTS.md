@@ -9,13 +9,13 @@ Requirements for v0.1 release. Each maps to roadmap phases.
 
 ### Infrastructure
 
-- [ ] **INFR-01**: Nx monorepo scaffolded with pnpm (apps/api, apps/web, apps/admin, apps/worker, apps/docs)
-- [ ] **INFR-02**: Shared packages created (api-client, config, db, shared, ui, validators, auth)
+- [x] **INFR-01**: Nx monorepo scaffolded with pnpm (apps/api, apps/web, apps/admin, apps/worker, apps/docs)
+- [x] **INFR-02**: Shared packages created (api-client, config, db, shared, ui, validators, auth)
 - [ ] **INFR-03**: Environment configuration with Zod schema validation
 - [ ] **INFR-04**: Docker Compose for local development (PostgreSQL, Redis)
 - [ ] **INFR-05**: Structured logging with Pino (JSON, request context, correlation IDs)
 - [ ] **INFR-06**: Vitest testing framework configured across all packages
-- [ ] **INFR-07**: Biome linting and formatting configured across monorepo
+- [x] **INFR-07**: Biome linting and formatting configured across monorepo
 - [ ] **INFR-08**: Custom Nx generators for consistent library and module creation
 - [ ] **INFR-09**: Compliance-as-code test framework skeleton (NIST 800-53 control mapping)
 - [ ] **INFR-10**: Nx module boundary enforcement configured with tags
@@ -128,13 +128,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFR-01 | Phase 1 | Pending |
-| INFR-02 | Phase 1 | Pending |
+| INFR-01 | Phase 1 | Complete |
+| INFR-02 | Phase 1 | Complete |
 | INFR-03 | Phase 1 | Pending |
 | INFR-04 | Phase 1 | Pending |
 | INFR-05 | Phase 1 | Pending |
 | INFR-06 | Phase 8 | Pending |
-| INFR-07 | Phase 1 | Pending |
+| INFR-07 | Phase 1 | Complete |
 | INFR-08 | Phase 8 | Pending |
 | INFR-09 | Phase 8 | Pending |
 | INFR-10 | Phase 5 | Pending |
