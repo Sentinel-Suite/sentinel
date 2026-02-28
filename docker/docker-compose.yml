@@ -1,0 +1,166 @@
+services:
+  # ─────────────────────────────────────────────
+  # Core Profile (fast startup -- Postgres + Redis)
+  # ─────────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    profiles: [core, full]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-sentinel}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sentinel}
+      POSTGRES_DB: ${POSTGRES_DB:-sentinel_control}
+    ports:
+      - "${POSTGRES_PORT:-3510}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - sentinel-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sentinel}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    profiles: [core, full]
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-3511}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sentinel-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────
+  # Full Profile (adds observability, tooling, services)
+  # ─────────────────────────────────────────────
+
+  traefik:
+    image: traefik:v3.3
+    profiles: [full]
+    ports:
+      - "80:80"
+      - "${TRAEFIK_DASHBOARD_PORT:-3580}:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+    networks:
+      - sentinel-net
+
+  grafana:
+    image: grafana/grafana:latest
+    profiles: [full]
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    ports:
+      - "${GRAFANA_PORT:-3530}:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - sentinel-net
+
+  loki:
+    image: grafana/loki:latest
+    profiles: [full]
+    ports:
+      - "${LOKI_PORT:-3531}:3100"
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/config.yaml:ro
+    networks:
+      - sentinel-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    profiles: [full]
+    ports:
+      - "${PROMETHEUS_PORT:-3532}:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - sentinel-net
+
+  jaeger:
+    image: jaegertracing/jaeger:latest
+    profiles: [full]
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "${JAEGER_UI_PORT:-3533}:16686"
+      - "${JAEGER_OTLP_PORT:-4318}:4318"
+    networks:
+      - sentinel-net
+
+  glitchtip:
+    image: glitchtip/glitchtip:latest
+    profiles: [full]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-sentinel}:${POSTGRES_PASSWORD:-sentinel}@postgres:5432/glitchtip
+      SECRET_KEY: ${GLITCHTIP_SECRET_KEY:-change-me-in-production}
+      REDIS_URL: redis://redis:6379/1
+      GLITCHTIP_DOMAIN: http://localhost:${GLITCHTIP_PORT:-3540}
+      PORT: "8000"
+    ports:
+      - "${GLITCHTIP_PORT:-3540}:8000"
+    networks:
+      - sentinel-net
+
+  flagsmith:
+    image: flagsmith/flagsmith:latest
+    profiles: [full]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-sentinel}:${POSTGRES_PASSWORD:-sentinel}@postgres:5432/flagsmith
+      DJANGO_ALLOWED_HOSTS: "*"
+    ports:
+      - "${FLAGSMITH_PORT:-3541}:8000"
+    networks:
+      - sentinel-net
+
+  mailpit:
+    image: axllent/mailpit:latest
+    profiles: [full]
+    ports:
+      - "${MAILPIT_SMTP_PORT:-3525}:1025"
+      - "${MAILPIT_UI_PORT:-3526}:8025"
+    networks:
+      - sentinel-net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    profiles: [full]
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@sentinel.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "${PGADMIN_PORT:-3550}:80"
+    networks:
+      - sentinel-net
+
+volumes:
+  postgres_data:
+  redis_data:
+  grafana_data:
+
+networks:
+  sentinel-net:
+    name: sentinel-net
+    driver: bridge
