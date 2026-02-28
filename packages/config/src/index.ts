@@ -1,3 +1,2 @@
-// @sentinel/config -- Environment configuration
-// Functional implementation in Plan 02
-export {};
+export type { Env } from "./env";
+export { env } from "./env";

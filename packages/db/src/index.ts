@@ -1,3 +1,2 @@
-// @sentinel/db -- Database client and schema
-// Functional implementation in Plan 02
-export {};
+export { closeConnections, controlDb, createTenantDb } from "./client";
+export * from "./schema/control";

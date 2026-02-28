@@ -4,7 +4,20 @@
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "scripts": {
+    "db:push": "drizzle-kit push --config=drizzle.control.config.ts",
+    "db:generate": "drizzle-kit generate --config=drizzle.control.config.ts",
+    "db:studio": "drizzle-kit studio --config=drizzle.control.config.ts",
+    "migrate": "drizzle-kit push --config=drizzle.control.config.ts"
+  },
   "dependencies": {
-    "@sentinel/config": "workspace:*"
+    "@sentinel/config": "workspace:*",
+    "drizzle-orm": "0.45.1",
+    "pg": "8.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.10",
+    "@types/pg": "8.18.0",
+    "drizzle-kit": "0.31.9"
   }
 }
