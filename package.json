@@ -9,15 +9,25 @@
     "lint": "biome check .",
     "format": "biome format . --write",
     "type-check": "nx run-many --target=type-check",
-    "test": "nx run-many --target=test"
+    "test": "nx run-many --target=test",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "nx": "22.4.3",
+    "@biomejs/biome": "2.0.6",
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
     "@nx/js": "22.4.3",
     "@nx/nest": "22.4.3",
     "@nx/next": "22.4.3",
     "@nx/workspace": "22.4.3",
-    "typescript": "5.7.3",
-    "@biomejs/biome": "2.0.6"
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.0",
+    "nx": "22.4.3",
+    "typescript": "5.7.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
   }
 }

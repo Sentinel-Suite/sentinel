@@ -1,8 +1,47 @@
+# Dependencies
 node_modules/
+
+# Build outputs
 dist/
 .next/
+out/
+
+# Nx
 .nx/
 output.json
-*.log
-.DS_Store
+
+# Docker
+docker-compose.override.yml
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
 .env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+*.lcov
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+test-results/
+playwright-report/
+
+# Misc
+*.tsbuildinfo
