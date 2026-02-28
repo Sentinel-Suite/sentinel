@@ -1,7 +1,7 @@
-# Requirements: Sentinel Suite v0.1 — Platform Core
+# Requirements: Sentinel Suite v0.1 -- Platform Core
 
 **Defined:** 2026-02-28
-**Core Value:** A reliable, secure foundation that enforces tiered multi-tenant isolation and hybrid RBAC+ABAC authorization — so every module built on top inherits DOE-grade access control and audit compliance from day one.
+**Core Value:** A reliable, secure foundation that enforces tiered multi-tenant isolation and hybrid RBAC+ABAC authorization -- so every module built on top inherits DOE-grade access control and audit compliance from day one.
 
 ## v1 Requirements
 
@@ -111,16 +111,16 @@ Deferred to future milestones. Tracked but not in current roadmap.
 
 | Feature | Reason |
 |---------|--------|
-| Full 911/PSAP CAD system | Not a security platform feature — specialized domain |
-| Payroll processing | Scheduling only, no payroll — separate concern |
+| Full 911/PSAP CAD system | Not a security platform feature -- specialized domain |
+| Payroll processing | Scheduling only, no payroll -- separate concern |
 | Mobile app (React Native) | Web-first; mobile deferred to future milestone |
 | Desktop app | Web-first; desktop deferred to future milestone |
 | White-labeling | Branding customization deferred to v0.2+ |
-| Integration marketplace | Future phased rollout (plugin → webhooks → connectors → marketplace) |
+| Integration marketplace | Future phased rollout (plugin > webhooks > connectors > marketplace) |
 | FedRAMP certification | Future SaaS offering; architecture supports it but certification is separate |
 | Internationalization | English first; multi-language on future roadmap |
 | Domain modules (Security Ops, Dispatch, etc.) | v0.1 is infrastructure only; domain modules start v0.4+ |
-| External system integrations | Access control, CCTV, alarm panels — future integration framework |
+| External system integrations | Access control, CCTV, alarm panels -- future integration framework |
 
 ## Traceability
 
@@ -128,60 +128,60 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFR-01 | — | Pending |
-| INFR-02 | — | Pending |
-| INFR-03 | — | Pending |
-| INFR-04 | — | Pending |
-| INFR-05 | — | Pending |
-| INFR-06 | — | Pending |
-| INFR-07 | — | Pending |
-| INFR-08 | — | Pending |
-| INFR-09 | — | Pending |
-| INFR-10 | — | Pending |
-| TNCY-01 | — | Pending |
-| TNCY-02 | — | Pending |
-| TNCY-03 | — | Pending |
-| TNCY-04 | — | Pending |
-| TNCY-05 | — | Pending |
-| TNCY-06 | — | Pending |
-| TNCY-07 | — | Pending |
-| TNCY-08 | — | Pending |
-| TNCY-09 | — | Pending |
-| AUTH-01 | — | Pending |
-| AUTH-02 | — | Pending |
-| AUTH-03 | — | Pending |
-| AUTH-04 | — | Pending |
-| AUTH-05 | — | Pending |
-| AUTH-06 | — | Pending |
-| AUTH-07 | — | Pending |
-| RBAC-01 | — | Pending |
-| RBAC-02 | — | Pending |
-| RBAC-03 | — | Pending |
-| ABAC-01 | — | Pending |
-| ABAC-02 | — | Pending |
-| ABAC-03 | — | Pending |
-| ABAC-04 | — | Pending |
-| ABAC-05 | — | Pending |
-| AUDT-01 | — | Pending |
-| AUDT-02 | — | Pending |
-| AUDT-03 | — | Pending |
-| AUDT-04 | — | Pending |
-| AUDT-05 | — | Pending |
-| AUDT-06 | — | Pending |
-| AUDT-07 | — | Pending |
-| API-01 | — | Pending |
-| API-02 | — | Pending |
-| API-03 | — | Pending |
-| API-04 | — | Pending |
-| API-05 | — | Pending |
-| API-06 | — | Pending |
-| API-07 | — | Pending |
+| INFR-01 | Phase 1 | Pending |
+| INFR-02 | Phase 1 | Pending |
+| INFR-03 | Phase 1 | Pending |
+| INFR-04 | Phase 1 | Pending |
+| INFR-05 | Phase 1 | Pending |
+| INFR-06 | Phase 8 | Pending |
+| INFR-07 | Phase 1 | Pending |
+| INFR-08 | Phase 8 | Pending |
+| INFR-09 | Phase 8 | Pending |
+| INFR-10 | Phase 5 | Pending |
+| TNCY-01 | Phase 2 | Pending |
+| TNCY-02 | Phase 2 | Pending |
+| TNCY-03 | Phase 2 | Pending |
+| TNCY-04 | Phase 5 | Pending |
+| TNCY-05 | Phase 9 | Pending |
+| TNCY-06 | Phase 9 | Pending |
+| TNCY-07 | Phase 9 | Pending |
+| TNCY-08 | Phase 2 | Pending |
+| TNCY-09 | Phase 9 | Pending |
+| AUTH-01 | Phase 4 | Pending |
+| AUTH-02 | Phase 4 | Pending |
+| AUTH-03 | Phase 4 | Pending |
+| AUTH-04 | Phase 4 | Pending |
+| AUTH-05 | Phase 4 | Pending |
+| AUTH-06 | Phase 4 | Pending |
+| AUTH-07 | Phase 4 | Pending |
+| RBAC-01 | Phase 5 | Pending |
+| RBAC-02 | Phase 5 | Pending |
+| RBAC-03 | Phase 5 | Pending |
+| ABAC-01 | Phase 6 | Pending |
+| ABAC-02 | Phase 6 | Pending |
+| ABAC-03 | Phase 6 | Pending |
+| ABAC-04 | Phase 6 | Pending |
+| ABAC-05 | Phase 6 | Pending |
+| AUDT-01 | Phase 7 | Pending |
+| AUDT-02 | Phase 7 | Pending |
+| AUDT-03 | Phase 7 | Pending |
+| AUDT-04 | Phase 7 | Pending |
+| AUDT-05 | Phase 7 | Pending |
+| AUDT-06 | Phase 7 | Pending |
+| AUDT-07 | Phase 7 | Pending |
+| API-01 | Phase 3 | Pending |
+| API-02 | Phase 8 | Pending |
+| API-03 | Phase 8 | Pending |
+| API-04 | Phase 3 | Pending |
+| API-05 | Phase 3 | Pending |
+| API-06 | Phase 3 | Pending |
+| API-07 | Phase 8 | Pending |
 
 **Coverage:**
 - v1 requirements: 48 total
-- Mapped to phases: 0
-- Unmapped: 48 ⚠️
+- Mapped to phases: 48
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-28*
-*Last updated: 2026-02-28 after initial definition*
+*Last updated: 2026-02-28 after roadmap creation*
