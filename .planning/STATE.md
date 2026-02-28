@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 1 of 9 (Monorepo Foundation)
-Current Plan: 1 of 3 in current phase
+Current Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-28 -- Completed Plan 01-01 (Nx workspace scaffolding, Biome, Git hooks, CI)
+Last activity: 2026-02-28 -- Completed Plan 01-02 (Config, DB, Docker infrastructure)
 
-Progress: [#░░░░░░░░░] 4%
+Progress: [##░░░░░░░░] 7%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 9min
-- Total execution time: 0.15 hours
+- Total plans completed: 2
+- Average duration: 8.5min
+- Total execution time: 0.28 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-monorepo-foundation | 1/3 | 9min | 9min |
+| 01-monorepo-foundation | 2/3 | 17min | 8.5min |
 
 **Recent Trend:**
-- Last 5 plans: 9min
-- Trend: --
+- Last 5 plans: 9min, 8min
+- Trend: stable
 
 *Updated after each plan completion*
 
@@ -49,6 +49,9 @@ Recent decisions affecting current work:
 - [01-01]: Removed @nx/nest/plugin from nx.json -- Nx 22 @nx/nest has no plugin export; API targets defined explicitly in project.json
 - [01-01]: Removed nested biome.json files -- Biome v2 auto-discovers root config, nested extends caused conflicts
 - [01-01]: Biome files.includes scoped to apps/** and packages/** to avoid scanning .nx cache and output.json
+- [01-02]: Library packages use module: ESNext + moduleResolution: Bundler to support ESM-only deps while consumed by CJS apps
+- [01-02]: Zod v4 selected (compatible with t3-env 0.13.10 via StandardSchema)
+- [01-02]: Drizzle Kit config excluded from tsconfig -- standalone tool config, not compiled as part of library
 
 ### Pending Todos
 
@@ -63,5 +66,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 01-01-PLAN.md
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
