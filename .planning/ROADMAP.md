@@ -34,12 +34,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Environment variables are validated at startup -- missing or invalid values produce clear error messages, not silent failures
   4. API requests produce structured JSON logs with request context and correlation IDs
   5. `pnpm lint` and `pnpm format` run Biome checks across the entire monorepo
-**Plans**: TBD
+**Plans**: 3 plans in 3 waves (sequential)
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Nx workspace scaffolding, all apps + packages, Biome, Git hooks, CI, repo housekeeping
+- [ ] 01-02-PLAN.md -- Environment config (Zod validation), Drizzle DB setup, Docker Compose infrastructure
+- [ ] 01-03-PLAN.md -- NestJS API bootstrap with Pino logging, health endpoints, Next.js landing pages
 
 ### Phase 2: Database & Tenant Core
 **Goal**: The system can provision tenants and enforce data isolation so every query is automatically scoped to the requesting tenant
