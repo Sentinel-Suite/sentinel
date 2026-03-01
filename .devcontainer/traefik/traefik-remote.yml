@@ -1,0 +1,33 @@
+# Traefik config override for remote VM with HTTPS subdomains.
+# Used by docker-compose.remote.yml — does NOT replace the original traefik.yml.
+#
+# Requires: DNS A record  *.dev.sentinel-suite.app → VM IP
+
+api:
+  insecure: true
+  dashboard: true
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: ":443"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "${ACME_EMAIL:-admin@sentinel-suite.app}"
+      storage: /letsencrypt/acme.json
+      httpChallenge:
+        entryPoint: web
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: sentinel-net

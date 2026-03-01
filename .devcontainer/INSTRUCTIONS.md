@@ -287,6 +287,75 @@ make ps
 
 ---
 
+## Step 8: Custom Subdomains with HTTPS (Optional)
+
+Access your apps at real URLs like `admin.dev.sentinel-suite.app` instead of
+`localhost:3502`. Uses Let's Encrypt for free HTTPS certificates.
+
+### 8a. Set Up DNS
+
+Go to your domain registrar (Cloudflare, Namecheap, etc.) and add:
+
+| Type | Name | Value |
+|------|------|-------|
+| A | `*.dev.sentinel-suite.app` | `<YOUR_VM_IP>` |
+
+One wildcard record covers all subdomains.
+
+**If using Cloudflare:** Set the proxy status to "DNS only" (grey cloud),
+not "Proxied" — otherwise Cloudflare's proxy conflicts with Traefik's
+Let's Encrypt HTTP challenge.
+
+### 8b. Open Ports 80 + 443 on the VM
+
+SSH into the VM and run:
+
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+### 8c. Add to .env
+
+Add these to your `.env` on the VM:
+
+```bash
+DEV_DOMAIN=dev.sentinel-suite.app
+ACME_EMAIL=your-email@example.com
+```
+
+### 8d. Start with Subdomains
+
+```bash
+cd ~/sentinel-suite
+docker compose \
+  -f docker/docker-compose.yml \
+  -f .devcontainer/docker-compose.remote.yml \
+  --profile full --profile remote \
+  up -d
+```
+
+### 8e. Access Your Apps
+
+| URL | Service |
+|-----|---------|
+| `https://api.dev.sentinel-suite.app` | NestJS API |
+| `https://web.dev.sentinel-suite.app` | Next.js web app |
+| `https://admin.dev.sentinel-suite.app` | Admin dashboard |
+| `https://grafana.dev.sentinel-suite.app` | Grafana dashboards |
+| `https://jaeger.dev.sentinel-suite.app` | Jaeger tracing |
+| `https://mail.dev.sentinel-suite.app` | Mailpit email UI |
+| `https://pgadmin.dev.sentinel-suite.app` | pgAdmin |
+| `https://traefik.dev.sentinel-suite.app` | Traefik dashboard |
+
+First request takes ~10 seconds while Let's Encrypt issues the certificate.
+
+**Important:** These are publicly accessible dev URLs. Do not put real
+credentials or sensitive data in this environment. Consider adding Traefik
+BasicAuth middleware if you want password protection (see Traefik docs).
+
+---
+
 ## Shutting Down / Saving Money
 
 Your VM charges by the hour even when idle. Options:
@@ -309,3 +378,5 @@ Your VM charges by the hour even when idle. Options:
 | `scripts/remote/cloud-init.yml` | VM auto-provisioning (edit before use) |
 | `scripts/remote/setup-ssh.sh` | Local SSH config helper |
 | `scripts/remote/connect.sh` | Quick connect with tmux |
+| `.devcontainer/docker-compose.remote.yml` | Compose override for subdomain routing |
+| `.devcontainer/traefik/traefik-remote.yml` | Traefik config with HTTPS + Let's Encrypt |

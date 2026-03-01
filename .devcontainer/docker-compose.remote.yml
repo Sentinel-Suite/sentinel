@@ -1,0 +1,118 @@
+# Docker Compose OVERRIDE for remote VM with Traefik subdomains + HTTPS.
+# Does NOT modify the original docker-compose.yml.
+#
+# Usage:
+#   docker compose -f docker/docker-compose.yml -f .devcontainer/docker-compose.remote.yml --profile full up -d
+#
+# Prerequisites:
+#   1. DNS: *.dev.sentinel-suite.app → VM IP (A record)
+#   2. Set DEV_DOMAIN in .env (defaults to dev.sentinel-suite.app)
+#   3. Set ACME_EMAIL in .env for Let's Encrypt notifications
+
+services:
+  # Override traefik to add HTTPS + Let's Encrypt
+  traefik:
+    ports:
+      - "80:80"
+      - "443:443"
+      - "${TRAEFIK_DASHBOARD_PORT:-3580}:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./.devcontainer/traefik/traefik-remote.yml:/etc/traefik/traefik.yml:ro
+      - letsencrypt_data:/letsencrypt
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.dashboard.service=api@internal"
+
+  # ── App subdomains ──
+
+  # api.dev.sentinel-suite.app → NestJS API (port 3500)
+  api:
+    image: "node:22-slim"
+    profiles: [remote]
+    working_dir: /workspace
+    command: ["sh", "-c", "corepack enable && pnpm --filter api run dev"]
+    volumes:
+      - ..:/workspace
+    networks:
+      - sentinel-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.api.loadbalancer.server.port=3500"
+
+  # web.dev.sentinel-suite.app → Next.js web app (port 3501)
+  web:
+    image: "node:22-slim"
+    profiles: [remote]
+    working_dir: /workspace
+    command: ["sh", "-c", "corepack enable && pnpm --filter web run dev"]
+    volumes:
+      - ..:/workspace
+    networks:
+      - sentinel-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`web.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls.certresolver=letsencrypt"
+      - "traefik.http.services.web.loadbalancer.server.port=3501"
+
+  # admin.dev.sentinel-suite.app → Next.js admin dashboard (port 3502)
+  admin:
+    image: "node:22-slim"
+    profiles: [remote]
+    working_dir: /workspace
+    command: ["sh", "-c", "corepack enable && pnpm --filter admin run dev"]
+    volumes:
+      - ..:/workspace
+    networks:
+      - sentinel-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.admin.rule=Host(`admin.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.admin.entrypoints=websecure"
+      - "traefik.http.routers.admin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.admin.loadbalancer.server.port=3502"
+
+  # ── Infrastructure subdomains (optional) ──
+
+  grafana:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
+  jaeger:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jaeger.rule=Host(`jaeger.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.jaeger.entrypoints=websecure"
+      - "traefik.http.routers.jaeger.tls.certresolver=letsencrypt"
+      - "traefik.http.services.jaeger.loadbalancer.server.port=16686"
+
+  mailpit:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailpit.rule=Host(`mail.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.mailpit.entrypoints=websecure"
+      - "traefik.http.routers.mailpit.tls.certresolver=letsencrypt"
+      - "traefik.http.services.mailpit.loadbalancer.server.port=8025"
+
+  pgadmin:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.${DEV_DOMAIN:-dev.sentinel-suite.app}`)"
+      - "traefik.http.routers.pgadmin.entrypoints=websecure"
+      - "traefik.http.routers.pgadmin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
+
+volumes:
+  letsencrypt_data:
