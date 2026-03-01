@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 1 of 9 (Monorepo Foundation)
-Current Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-28 -- Completed Plan 01-02 (Config, DB, Docker infrastructure)
+Current Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-03-01 -- Completed Plan 01-03 (API bootstrap, landing pages)
 
-Progress: [##░░░░░░░░] 7%
+Progress: [###░░░░░░░] 11%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 8.5min
-- Total execution time: 0.28 hours
+- Total plans completed: 3
+- Average duration: 10.7min
+- Total execution time: 0.53 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-monorepo-foundation | 2/3 | 17min | 8.5min |
+| 01-monorepo-foundation | 3/3 | 32min | 10.7min |
 
 **Recent Trend:**
-- Last 5 plans: 9min, 8min
+- Last 5 plans: 9min, 8min, 15min
 - Trend: stable
 
 *Updated after each plan completion*
@@ -52,6 +52,10 @@ Recent decisions affecting current work:
 - [01-02]: Library packages use module: ESNext + moduleResolution: Bundler to support ESM-only deps while consumed by CJS apps
 - [01-02]: Zod v4 selected (compatible with t3-env 0.13.10 via StandardSchema)
 - [01-02]: Drizzle Kit config excluded from tsconfig -- standalone tool config, not compiled as part of library
+- [01-03]: API tsconfig uses ESNext module + Bundler moduleResolution for ESM compat (same pattern as library packages)
+- [01-03]: biome-ignore used for NestJS DI imports (emitDecoratorMetadata requires runtime class refs, incompatible with import type)
+- [01-03]: OTel tracing.ts reads process.env directly, not @sentinel/config, because it must load before all other imports
+- [01-03]: Redis health indicator uses lazyConnect with 3s timeout to avoid blocking API startup
 
 ### Pending Todos
 
@@ -65,6 +69,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-28
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-01
+Stopped at: Completed 01-03-PLAN.md (Phase 01 complete)
 Resume file: None

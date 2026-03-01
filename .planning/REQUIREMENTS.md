@@ -13,7 +13,7 @@ Requirements for v0.1 release. Each maps to roadmap phases.
 - [x] **INFR-02**: Shared packages created (api-client, config, db, shared, ui, validators, auth)
 - [x] **INFR-03**: Environment configuration with Zod schema validation
 - [x] **INFR-04**: Docker Compose for local development (PostgreSQL, Redis)
-- [ ] **INFR-05**: Structured logging with Pino (JSON, request context, correlation IDs)
+- [x] **INFR-05**: Structured logging with Pino (JSON, request context, correlation IDs)
 - [ ] **INFR-06**: Vitest testing framework configured across all packages
 - [x] **INFR-07**: Biome linting and formatting configured across monorepo
 - [ ] **INFR-08**: Custom Nx generators for consistent library and module creation
@@ -132,7 +132,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFR-02 | Phase 1 | Complete |
 | INFR-03 | Phase 1 | Complete |
 | INFR-04 | Phase 1 | Complete |
-| INFR-05 | Phase 1 | Pending |
+| INFR-05 | Phase 1 | Complete |
 | INFR-06 | Phase 8 | Pending |
 | INFR-07 | Phase 1 | Complete |
 | INFR-08 | Phase 8 | Pending |
