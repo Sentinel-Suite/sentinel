@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Sentinel Suite - Admin",
-  description: "Sentinel Suite - Admin Application",
+  description: "System Administration Console",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="min-h-screen bg-gray-50 antialiased">{children}</body>
     </html>
   );
 }
