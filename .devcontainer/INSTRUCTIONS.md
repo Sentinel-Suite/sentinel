@@ -127,10 +127,22 @@ cloud provider in Step 3.
 Back on your local machine, run:
 
 ```bash
-bash scripts/remote/setup-ssh.sh <YOUR_VM_IP_ADDRESS>
+bash scripts/remote/setup-ssh.sh dev.sentinel-suite.app
 ```
 
-Replace `<YOUR_VM_IP_ADDRESS>` with the IP you copied (e.g. `65.108.42.123`).
+This uses your domain name so you never have to remember the IP. You can also
+pass a raw IP if you prefer (`bash scripts/remote/setup-ssh.sh 65.108.42.123`).
+
+**But first** — point `dev.sentinel-suite.app` to your VM. Go to your domain
+registrar and add these DNS records:
+
+| Type | Name | Value |
+|------|------|-------|
+| A | `dev.sentinel-suite.app` | `<YOUR_VM_IP>` |
+| A | `*.dev.sentinel-suite.app` | `<YOUR_VM_IP>` |
+
+The first record lets you `ssh dev.sentinel-suite.app`. The wildcard lets
+subdomains like `admin.dev.sentinel-suite.app` work later (Step 8).
 
 This adds the server to your SSH config. If it prints "Connected successfully!"
 you're good. If not, wait another minute and try:
@@ -141,7 +153,8 @@ ssh sentinel-dev
 
 **Troubleshooting if connection fails:**
 - Wait 3-5 minutes — cloud-init may still be running
-- Double-check the IP address
+- Double-check the IP/hostname
+- Make sure your DNS record is pointing to the right IP
 - Make sure your public key was pasted correctly in Step 3
 
 ---
@@ -227,7 +240,7 @@ bash scripts/remote/connect.sh
 
 1. Install Blink Shell ($20) or Termius (free tier) from the App Store
 2. Add a new host:
-   - Hostname: your VM IP
+   - Hostname: `dev.sentinel-suite.app` (or VM IP)
    - User: `dev`
    - Key: import your `sentinel_ed25519` private key
 3. Connect, then: `tmux attach -t dev`
@@ -292,15 +305,10 @@ make ps
 Access your apps at real URLs like `admin.dev.sentinel-suite.app` instead of
 `localhost:3502`. Uses Let's Encrypt for free HTTPS certificates.
 
-### 8a. Set Up DNS
+### 8a. DNS
 
-Go to your domain registrar (Cloudflare, Namecheap, etc.) and add:
-
-| Type | Name | Value |
-|------|------|-------|
-| A | `*.dev.sentinel-suite.app` | `<YOUR_VM_IP>` |
-
-One wildcard record covers all subdomains.
+If you already set up the `dev.sentinel-suite.app` and `*.dev.sentinel-suite.app`
+A records in Step 4, you're done with DNS. If not, go back and add them now.
 
 **If using Cloudflare:** Set the proxy status to "DNS only" (grey cloud),
 not "Proxied" — otherwise Cloudflare's proxy conflicts with Traefik's

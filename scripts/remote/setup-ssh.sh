@@ -3,14 +3,15 @@ set -euo pipefail
 
 # Sentinel Suite — SSH configuration helper
 # Run this on your LOCAL machine to set up SSH access to your dev VM.
-# Usage: bash scripts/remote/setup-ssh.sh <VM_IP_ADDRESS>
+# Usage: bash scripts/remote/setup-ssh.sh [hostname-or-ip]
+# Default: dev.sentinel-suite.app
 
-VM_IP="${1:?Usage: setup-ssh.sh <VM_IP_ADDRESS>}"
+VM_HOST="${1:-dev.sentinel-suite.app}"
 KEY_NAME="sentinel_ed25519"
 KEY_PATH="$HOME/.ssh/$KEY_NAME"
 SSH_CONFIG="$HOME/.ssh/config"
 
-echo "==> Setting up SSH for Sentinel Suite dev VM at $VM_IP"
+echo "==> Setting up SSH for Sentinel Suite dev VM at $VM_HOST"
 
 # Generate SSH key if it doesn't exist
 if [ ! -f "$KEY_PATH" ]; then
@@ -30,7 +31,7 @@ if ! grep -q "Host sentinel-dev" "$SSH_CONFIG" 2>/dev/null; then
 
 # Sentinel Suite dev VM
 Host sentinel-dev
-    HostName $VM_IP
+    HostName $VM_HOST
     User dev
     IdentityFile $KEY_PATH
     ForwardAgent yes
