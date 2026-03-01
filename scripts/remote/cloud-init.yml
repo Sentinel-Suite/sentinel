@@ -1,0 +1,61 @@
+#cloud-config
+# Sentinel Suite — Cloud VM provisioning (Hetzner CX41 / DigitalOcean)
+# Usage: Paste into "User Data" when creating your VM, or:
+#   hcloud server create --name sentinel-dev --type cx41 --image ubuntu-24.04 --user-data-from-file scripts/remote/cloud-init.yml --ssh-key <your-key-name>
+
+users:
+  - name: dev
+    groups: sudo, docker
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - <PASTE_YOUR_SSH_PUBLIC_KEY_HERE>
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - git
+  - curl
+  - jq
+  - htop
+  - tmux
+  - unzip
+  - fail2ban
+  - ufw
+
+runcmd:
+  # ── Docker Engine ──
+  - curl -fsSL https://get.docker.com | sh
+  - systemctl enable docker
+  - systemctl start docker
+
+  # ── Node.js 22 via NodeSource ──
+  - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  - apt-get install -y nodejs
+  - corepack enable
+  - corepack prepare pnpm@9.15.4 --activate
+
+  # ── Claude Code CLI ──
+  - npm install -g @anthropic-ai/claude-code
+
+  # ── Firewall (only SSH exposed) ──
+  - ufw default deny incoming
+  - ufw default allow outgoing
+  - ufw allow 22/tcp
+  - ufw --force enable
+
+  # ── SSH hardening ──
+  - sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+  - sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+  - systemctl restart sshd
+
+  # ── Fail2ban ──
+  - systemctl enable fail2ban
+  - systemctl start fail2ban
+
+  # ── Clone repo (update URL to yours) ──
+  - su - dev -c "git clone <YOUR_REPO_URL> ~/sentinel-suite"
+
+  # ── Create sentinel-net for devcontainer ──
+  - docker network create sentinel-net || true

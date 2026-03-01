@@ -1,0 +1,43 @@
+{
+  "name": "Sentinel Suite",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+
+  // Mount host Docker socket so compose runs sibling containers (not DinD)
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+
+  // Join the same Docker network as compose infrastructure services
+  "runArgs": ["--network=sentinel-net"],
+
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "postCreateCommand": "bash .devcontainer/postCreate.sh",
+
+  // Forward app + key infrastructure ports
+  "forwardPorts": [3500, 3501, 3502, 3530, 3533, 3540, 3526, 3550],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "bradlc.vscode-tailwindcss",
+        "nrwl.angular-console"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.formatOnSave": true,
+        "biome.lspBin": "./node_modules/@biomejs/biome/bin/biome",
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    }
+  },
+
+  "remoteUser": "node"
+}
