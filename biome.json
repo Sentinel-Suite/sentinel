@@ -20,6 +20,12 @@
     }
   },
   "files": {
-    "includes": ["apps/**", "packages/**", "biome.json"]
+    "includes": [
+      "apps/*/src/**",
+      "apps/*/next.config.ts",
+      "apps/*/postcss.config.mjs",
+      "packages/*/src/**",
+      "biome.json"
+    ]
   }
 }
