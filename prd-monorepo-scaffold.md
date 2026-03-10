@@ -108,11 +108,12 @@ Remote verification processes.
 
 ```
 sentinel/
-├── apps/
+├── apps/                     # Deployable targets; Imports from modules/ + libs/
 │   ├── api/                  # Maps to: API Server Shell
 │   ├── mobile/               # Maps to: Mobile App Shell
 │   └── web/                  # Maps to: Web Application Shell
-├── libs/
+├── modules/                  # Domain modules (vertical slices); Imports from libs/
+├── libs/                     # Shared infrastructure/primitives; Imports from packages/
 │   ├── api/
 │   ├── mobile/
 │   │   └── data-access-api/  # Maps to: Sync Boundary Placeholder
@@ -121,6 +122,7 @@ sentinel/
 │   │   └── utils/            # Maps to: Code Structure (Utility functions)
 │   ├── sync-protocol/        # Maps to: Sync Interface Contracts
 │   └── web/
+├── packages/                 # Publishable utilities/configs; Standalone
 ├── .github/
 │   └── workflows/
 │       └── ci.yml            # Maps to: CI Pipeline
@@ -141,6 +143,16 @@ sentinel/
 - **Maps to capability**: Monorepo Foundation & DX Tooling
 - **Responsibility**: Establishes correct pnpm layout, NX target caching, git hooks, and global standards.
 - **Exports**: Workspace commands (`nx run-many`, `pnpm install`, etc).
+
+### Module: packages/* (Tier 4)
+- **Maps to capability**: DX Tooling & Infrastructure
+- **Responsibility**: Publishable utility configurations and shared contracts. Standalone with zero internal imports.
+- **Exports**: Standalone utilities, configs.
+
+### Module: modules/* (Tier 2)
+- **Maps to capability**: Feature implementation
+- **Responsibility**: Domain modules serving as vertical slices (colocated FE+BE). Only imports from `libs/`. Cross-module communication via event bus.
+- **Exports**: Business domain slices.
 
 ### Module: Infrastructure
 - **Maps to capability**: Local Infrastructure
@@ -195,20 +207,24 @@ sentinel/
 ### Foundation Layer (Phase 1)
 No dependencies - these are built first.
 - **Workspace Tooling Root**: `pnpm-workspace.yaml`, `nx.json`, DX tooling, configs, `.nvmrc`.
+- **packages/***: Base configurations and utilities (no dependencies).
 
 ### Base Libraries (Phase 2 & 3)
-- **libs/shared/types**: Depends on [Workspace Tooling Root]
-- **libs/shared/utils**: Depends on [Workspace Tooling Root]
-- **libs/sync-protocol**: Depends on [Workspace Tooling Root]
+- **libs/shared/types**: Depends on [packages/*]
+- **libs/shared/utils**: Depends on [packages/*]
+- **libs/sync-protocol**: Depends on [packages/*]
 
 ### Domain Libraries & Data (Phase 6 & 8)
 - **libs/mobile/data-access-api**: Depends on [libs/sync-protocol, libs/shared/types, libs/shared/utils]
 - **Infrastructure**: Depends on [Workspace Tooling Root]
 
+### Domain Modules
+- **modules/***: Depends on [libs/*]
+
 ### Applications (Phase 4)
-- **apps/api**: Depends on [libs/shared/types, libs/shared/utils]
-- **apps/web**: Depends on [libs/shared/types, libs/shared/utils]
-- **apps/mobile**: Depends on [libs/mobile/data-access-api, libs/shared/types, libs/shared/utils]
+- **apps/api**: Depends on [modules/*, libs/*]
+- **apps/web**: Depends on [modules/*, libs/*]
+- **apps/mobile**: Depends on [modules/*, libs/*]
 
 ### Verification & CI (Phase 7 & 9)
 - **CI Pipeline**: Depends on [All Application & Foundation Modules]
@@ -221,7 +237,7 @@ No dependencies - these are built first.
 **Goal**: Establish deterministic package routing & execution engine.
 **Entry Criteria**: Clean initialized git repository.
 **Tasks**:
-- [ ] Initialize pnpm 10 workspace (`pnpm-workspace.yaml` with apps/libs globs, single-version catalogs).
+- [ ] Initialize pnpm 10 workspace (`pnpm-workspace.yaml` with apps/*, modules/*, libs/*, packages/* globs, single-version catalogs).
 - [ ] Create `.npmrc` enforcing `node-linker=hoisted`. Document Metro rationale.
 - [ ] Setup NX 22 (`nx.json` with `nxCloud: false`). Document FISMA rationale (CVE-2025-36852).
 - [ ] Define NX task pipelines (`targetDefaults`: build depends on ^build, test depends on ^build).
@@ -236,7 +252,7 @@ No dependencies - these are built first.
 **Tasks**:
 - [ ] Define `tsconfig.base.json` with `composite: true`, `declaration: true`.
 - [ ] Configure `nx sync` for types.
-- [ ] Create empty layout: `apps/web|api|mobile`, `libs/shared|web|api|mobile`.
+- [ ] Create empty layout for the 4 tiers: `apps/`, `modules/`, `libs/`, `packages/`.
 - [ ] Scaffold `libs/shared/types` with barrel `index.ts`.
 - [ ] Scaffold `libs/shared/utils` with barrel `index.ts`.
 **Exit Criteria**: Directories exist. `tsconfig` is valid.
