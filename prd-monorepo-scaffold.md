@@ -134,6 +134,7 @@ sentinel/
 ├── nx.json                   # Maps to: Task Orchestration (Task caching)
 ├── eslint.config.js          # Maps to: DX Tooling (Linting + Boundaries)
 ├── package.json
+├── .gitignore                # Maps to: DX Tooling (Monorepo optimized)
 └── tsconfig.base.json        # Maps to: Code Structure
 ```
 
@@ -250,6 +251,7 @@ No dependencies - these are built first.
 - [ ] Define NX task pipelines (`targetDefaults`: build depends on ^build, test depends on ^build).
 - [ ] Implement local task caching (`cache: true`) and define `namedInputs`.
 - [ ] Setup affected execution (`nx affected` mapping to `defaultBase: main`).
+- [ ] Configure monorepo-optimized `.gitignore` (ignoring `.nx/`, `node_modules/`, `dist/`, `coverage/`, and AI agent folders).
 **Exit Criteria**: Base tooling installed without error. `nx.json` verified.
 **Delivers**: Foundation required to host shared libraries and applications.
 
