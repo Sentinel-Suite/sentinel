@@ -157,8 +157,8 @@ All workspace packages use `@sentinel/` scoped npm aliases targeting their respe
 
 ### Module: Workspace Tooling Root
 - **Maps to capability**: Monorepo Foundation & DX Tooling
-- **Responsibility**: Establishes correct pnpm layout, NX target caching, git hooks, and global standards.
-- **Exports**: Workspace commands (`nx run-many`, `pnpm install`, etc).
+- **Responsibility**: Establishes correct pnpm layout, NX target caching, git hooks, and global standards. Includes local NX generators (`tools/generators/module`).
+- **Exports**: Workspace commands (`nx run-many`, `nx g @sentinel/generators:module`, etc).
 
 ### Module: packages/* (Tier 4)
 - **Maps to capability**: DX Tooling & Infrastructure
@@ -301,15 +301,17 @@ No dependencies - these are built first.
 - [ ] Scaffold `libs/shared/utils` with barrel `index.ts`.
 **Exit Criteria**: Directories exist. `tsconfig` is valid and exportable.
 
-### Phase 3: Module Boundaries
-**Goal**: Lock down import constraints.
+### Phase 3: Module Boundaries & Scaffolding Tooling
+**Goal**: Lock down import constraints and establish domain module generator.
 **Entry Criteria**: Phase 2 complete.
 **Tasks**:
 - [ ] Setup `@nx/enforce-module-boundaries` in global ESLint.
-- [ ] Set tags (`platform:*`, `type:*`) in `project.json` definitions.
+- [ ] Set tags (`scope:*`, `type:*`, `platform:*`) in `project.json` definitions.
 - [ ] Implement strict `depConstraints` mapping tags.
 - [ ] Document rationale that boundaries cannot be retrofitted easily.
-**Exit Criteria**: Intentional boundary violation is correctly caught by ESLint rule.
+- [ ] Create NX local generator at `tools/generators/module/` to scaffold 3-part modules (backend, frontend, shared) dynamically.
+- [ ] Generator must utilize `@nx/devkit` to auto-update `tsconfig.base.json` path aliases and create precise nested `.gitkeep` setups.
+**Exit Criteria**: Intentional boundary violation is correctly caught by ESLint rule. Running the generator produces lint-passing, modular targets.
 
 ### Phase 4: Application Shells
 **Goal**: Deployable build-ready shells for all three client boundaries.
