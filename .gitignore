@@ -3,3 +3,6 @@
 .gemini/
 .opencode/
 .docs/
+
+# Ignore story / spec files during setup
+1-*.md

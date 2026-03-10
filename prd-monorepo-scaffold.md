@@ -138,6 +138,7 @@ sentinel/
 ├── pnpm-workspace.yaml       # Maps to: Package Management
 ├── nx.json                   # Maps to: Task Orchestration (Task caching)
 ├── eslint.config.js          # Maps to: DX Tooling (Linting + Boundaries)
+├── vitest.workspace.ts       # Maps to: DX Tooling (Testing)
 ├── package.json
 ├── .gitignore                # Maps to: DX Tooling (Monorepo optimized)
 └── tsconfig.base.json        # Maps to: Code Structure
@@ -228,7 +229,7 @@ All workspace packages use `@sentinel/` scoped npm aliases targeting their respe
 
 ### Foundation Layer (Phase 1)
 No dependencies - these are built first.
-- **Workspace Tooling Root**: `pnpm-workspace.yaml`, `nx.json`, DX tooling, configs, `.nvmrc`.
+- **Workspace Tooling Root**: `pnpm-workspace.yaml`, `nx.json`, `vitest.workspace.ts`, DX tooling, configs, `.nvmrc` or `.node-version`.
 - **packages/***: Base configurations and utilities (no dependencies).
 
 ### Base Libraries (Phase 2 & 3)
@@ -266,7 +267,8 @@ No dependencies - these are built first.
 - [ ] Implement local task caching (`cache: true`) and define `namedInputs`.
 - [ ] Setup affected execution (`nx affected` mapping to `defaultBase: main`).
 - [ ] Configure monorepo-optimized `.gitignore` (ignoring `.nx/`, `node_modules/`, `dist/`, `coverage/`, and AI agent folders).
-**Exit Criteria**: Base tooling installed without error. `nx.json` verified.
+- [ ] Setup `vitest.workspace.ts` baseline testing framework.
+**Exit Criteria**: Base tooling installed without error. `nx.json` verified. `nx build`, `nx test`, and `nx lint` commands execute cleanly.
 **Delivers**: Foundation required to host shared libraries and applications.
 
 ### Phase 2: TypeScript & Project Structure
@@ -318,7 +320,7 @@ No dependencies - these are built first.
 **Tasks**:
 - [ ] Setup Docker Compose file with `postgres:17-alpine`, `healthcheck: pg_isready`, and `depends_on`.
 - [ ] Setup `.env.example` documenting requirements.
-- [ ] Lock Node.js version via `.nvmrc` and `engines.node`.
+- [ ] Lock Node.js version via `.nvmrc` or `.node-version` (v22.5.4 LTS or higher) and `engines.node`.
 - [ ] Create base multi-stage Dockerfiles utilizing BuildKit cache mounts.
 - [ ] Provide initial seed schema directory `/infra/postgres-init`.
 - [ ] Configure monorepo-optimized `.dockerignore` blocking `.nx`, `node_modules`.
