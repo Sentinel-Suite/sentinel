@@ -161,7 +161,22 @@ All workspace packages use `@sentinel/` scoped npm aliases targeting their respe
 ### Module: packages/* (Tier 4)
 - **Maps to capability**: DX Tooling & Infrastructure
 - **Responsibility**: Publishable utility configurations and shared contracts. Standalone with zero internal imports.
-- **Exports**: Standalone utilities, configs.
+- **File structure**:
+  ```
+  packages/
+  ├── eslint-config/                  # Maps to: Formatting & Linting
+  │   ├── base.js
+  │   ├── backend.js
+  │   ├── frontend.js
+  │   ├── shared.js
+  │   └── module-boundaries.js
+  └── tsconfig/                       # Maps to: TypeScript Project References
+      ├── base.json
+      ├── backend.json
+      ├── frontend.json
+      └── shared.json
+  ```
+- **Exports**: Standalone utilities, configs (`@sentinel/eslint-config`, `@sentinel/tsconfig`).
 
 ### Module: modules/* (Tier 2)
 - **Maps to capability**: Feature implementation
@@ -275,12 +290,14 @@ No dependencies - these are built first.
 **Goal**: Core compile definitions and base library scaffolding.
 **Entry Criteria**: Phase 1 complete.
 **Tasks**:
+- [ ] Initialize `packages/tsconfig`.
 - [ ] Define `tsconfig.base.json` with `composite: true`, `declaration: true`.
+- [ ] Configure `packages/tsconfig` with `base.json`, `backend.json`, `frontend.json`, `shared.json` exporting strict mode configurations.
 - [ ] Configure `nx sync` for types.
 - [ ] Create empty layout for the 4 tiers: `apps/`, `modules/`, `libs/`, `packages/`.
 - [ ] Scaffold `libs/shared/types` with barrel `index.ts`.
 - [ ] Scaffold `libs/shared/utils` with barrel `index.ts`.
-**Exit Criteria**: Directories exist. `tsconfig` is valid.
+**Exit Criteria**: Directories exist. `tsconfig` is valid and exportable.
 
 ### Phase 3: Module Boundaries
 **Goal**: Lock down import constraints.
@@ -306,13 +323,16 @@ No dependencies - these are built first.
 **Goal**: Formatting, linting, and committing guardrails.
 **Entry Criteria**: Phase 4 complete.
 **Tasks**:
-- [ ] Configure shared ESLint v9 flat config.
+- [ ] Initialize `packages/eslint-config` (ESLint v9/v10 flat config).
+- [ ] Configure `packages/eslint-config` with `base.js`, `backend.js`, `frontend.js`, `shared.js`, and `module-boundaries.js`.
+- [ ] Enforce naming conventions via ESLint (files/folders in kebab-case, variables/functions in camelCase, classes/types in PascalCase).
+- [ ] Enforce `@typescript-eslint/consistent-type-imports`.
 - [ ] Establish Prettier 3 configuration.
 - [ ] Setup Husky 9 (`pre-commit`, `commit-msg`).
 - [ ] Add lint-staged 16 configuration for changed TS files.
 - [ ] Configure commitlint 20 (`@commitlint/config-conventional`).
 - [ ] Set `.gitattributes` (`* text=auto eol=lf`).
-**Exit Criteria**: Single-file-change pre-commit hook completes in <5 seconds.
+**Exit Criteria**: Shared rules applied across workspace. Pre-commit hook completes in <5 seconds.
 
 ### Phase 6: Infrastructure
 **Goal**: Local data persistence environment.
