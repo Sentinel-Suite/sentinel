@@ -137,6 +137,13 @@ sentinel/
 └── tsconfig.base.json        # Maps to: Code Structure
 ```
 
+### Path Aliasing
+All workspace packages use `@sentinel/` scoped npm aliases targeting their respective folder name, ignoring the tier prefix.
+- `libs/db` → `@sentinel/db`
+- `modules/dispatch` → `@sentinel/dispatch`
+- `packages/eslint-config` → `@sentinel/eslint-config`
+- `apps/api` → `@sentinel/api`
+
 ## Module Definitions
 
 ### Module: Workspace Tooling Root
