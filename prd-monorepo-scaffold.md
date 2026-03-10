@@ -139,6 +139,8 @@ sentinel/
 ├── nx.json                   # Maps to: Task Orchestration (Task caching)
 ├── eslint.config.js          # Maps to: DX Tooling (Linting + Boundaries)
 ├── vitest.workspace.ts       # Maps to: DX Tooling (Testing)
+├── .lintstagedrc             # Maps to: DX Tooling (Pre-commit formatting/linting)
+├── .commitlintrc.yaml        # Maps to: DX Tooling (Commit message validation)
 ├── package.json
 ├── .gitignore                # Maps to: DX Tooling (Monorepo optimized)
 └── tsconfig.base.json        # Maps to: Code Structure
@@ -329,10 +331,10 @@ No dependencies - these are built first.
 - [ ] Enforce `@typescript-eslint/consistent-type-imports`.
 - [ ] Establish Prettier 3 configuration.
 - [ ] Setup Husky 9 (`pre-commit`, `commit-msg`).
-- [ ] Add lint-staged 16 configuration for changed TS files.
-- [ ] Configure commitlint 20 (`@commitlint/config-conventional`).
+- [ ] Add `lint-staged` 16 configuration (`.lintstagedrc`) to run `nx affected -t lint` and `prettier` on changed files.
+- [ ] Configure `commitlint` 20 (`.commitlintrc.yaml` with `@commitlint/config-conventional`).
 - [ ] Set `.gitattributes` (`* text=auto eol=lf`).
-**Exit Criteria**: Shared rules applied across workspace. Pre-commit hook completes in <5 seconds.
+**Exit Criteria**: Shared rules applied across workspace. Pre-commit hook completes in <5 seconds. Invalid commits (e.g., "fixed stuff") are rejected.
 
 ### Phase 6: Infrastructure
 **Goal**: Local data persistence environment.
