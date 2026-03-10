@@ -113,6 +113,11 @@ sentinel/
 │   ├── mobile/               # Maps to: Mobile App Shell
 │   └── web/                  # Maps to: Web Application Shell
 ├── modules/                  # Domain modules (vertical slices); Imports from libs/
+│   └── dispatch/             # Example module domain
+│       ├── backend/          # NestJS module, services, controllers, commands, events
+│       ├── frontend/         # Domain-specific React components, pages, hooks
+│       ├── shared/           # Types, DTOs, interfaces shared between FE/BE
+│       └── tests/            # Module-specific integration tests
 ├── libs/                     # Shared infrastructure/primitives; Imports from packages/
 │   ├── api/
 │   ├── mobile/
@@ -160,6 +165,15 @@ All workspace packages use `@sentinel/` scoped npm aliases targeting their respe
 ### Module: modules/* (Tier 2)
 - **Maps to capability**: Feature implementation
 - **Responsibility**: Domain modules serving as vertical slices (colocated FE+BE). Only imports from `libs/`. Cross-module communication via event bus.
+- **File structure**:
+  ```
+  modules/<domain>/
+  ├── backend/     # NestJS module, services, controllers, commands, events
+  ├── frontend/    # Domain-specific React components, pages, hooks
+  ├── shared/      # Types, DTOs, interfaces shared between FE/BE
+  └── tests/       # Module-specific integration tests
+  ```
+- Note: These are separate workspace packages within the domain module folder.
 - **Exports**: Business domain slices.
 
 ### Module: Infrastructure
